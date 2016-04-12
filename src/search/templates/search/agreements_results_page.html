@@ -1,0 +1,94 @@
+<html>
+<head>
+    <title>{{ title }}</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'search/css/sort_filter.css' %}">
+
+    <!-- CSS for navbar-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+        #result {
+            margin: 1%;
+        }
+    </style>
+</head>
+<body>
+{% include "search/navbar.html" %}
+
+
+<div id="result">
+    <table id="table0" class="mytable" cellspacing="0">
+        <thead>
+        <tr>
+            <th class="sort" data-sort="sort-01" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Date</strong></th>
+            <th class="sort" data-sort="sort-02" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Company</strong></th>
+            <th class="sort" data-sort="sort-03" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Name of agreements</strong></th>
+            <th class="sort" data-sort="sort-04" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Agreement type</strong></th>
+            <th class="sort" data-sort="sort-05" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Field with form</strong></th>
+            <th class="sort" data-sort="sort-06" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Other information</strong></th>
+            <th class="sort" data-sort="sort-07" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Related Agreements</strong></th>
+            <th class="sort" data-sort="sort-08" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Parties</strong></th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        {% for item in data %}
+        <tr style="">
+            <td class="sort-01">{{ item.0 }}</td>
+            <td class="sort-02">{{ item.1 }}</td>
+            <td class="sort-03">{{ item.2 }}</td>
+            <td class="sort-04">{{ item.3 }}</td>
+            <td class="sort-05">{{ item.4 }}</td>
+            <td class="sort-06">{{ item.5 }}</td>
+            <td class="sort-07"></td>
+            <td class="sort-08">{{ item.6 }} {{ item.7 }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="{% static 'search/js/filter.js' %}"></script>
+<script src="{% static 'search/js/sort.js' %}"></script>
+<script language="javascript" type="text/javascript">
+	var tableFilters = {
+		btn_reset: true,
+		btn_reset_text: "Clear",
+
+		rows_counter: true,
+		rows_counter_text: "Displayed rows: ",
+
+		col_0: "select",
+		col_1: "select",
+		col_2: "select",
+		col_3: "select",
+		col_4: "select",
+		col_5: "select",
+		col_6: "select",
+		col_7: "select",
+        col_8: "select",
+
+		enter_key: true,
+		sort_select: true,
+
+		display_all_text: "- Show all -",
+	}
+	setFilterGrid("table0",0,tableFilters);
+
+var options0 = {
+  valueNames: [ 'sort-01', 'sort-02', 'sort-03', 'sort-04', 'sort-05', 'sort-06', 'sort-07', 'sort-08' ]
+};
+
+var userList = new List('result', options0);
+
+</script>
+
+</body>
+</html>

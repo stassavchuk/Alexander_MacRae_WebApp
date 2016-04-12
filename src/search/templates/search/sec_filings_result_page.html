@@ -1,0 +1,83 @@
+<html>
+<head>
+    <title>{{ title }}</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'search/css/sort_filter.css' %}">
+    <!-- CSS for navbar-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+    #result {
+        margin: 1%;
+    }
+    </style>
+</head>
+<body>
+{% include "search/navbar.html" %}
+<div id="result">
+    <table id="table" class="mytable" cellspacing="0">
+        <thead>
+        <tr>
+            <th class="sort" data-sort="sort-1" width="" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Date</strong></th>
+            <th class="sort" data-sort="sort-2" width="" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Company</strong></th>
+            <th class="sort" data-sort="sort-3" width="" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>SEC Form</strong></th>
+            <th class="sort" data-sort="sort-4" width="" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>SEC Form Additional Information</strong></th>
+            <th class="sort" data-sort="sort-5" style="cursor:pointer" onselectstart='return false;'
+                onmousedown='return false;'><strong>Exhibits</strong></th>
+        </tr>
+        </thead>
+        <tbody class="list">
+
+        {% for item in data %}
+        <tr style="">
+            <td class="sort-1">{{ item.0 }}</td>
+            <td class="sort-2">{{ item.1 }}</td>
+            <td class="sort-3">{{ item.2 }}</td>
+            <td class="sort-4">{{ item.3 }}</td>
+            <td class="sort-5">
+                {{ item.6 }} (<a href="http://www.sec.gov/{{ item.5 }}">{{ item.4 }}</a>)
+            </td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+<script src="{% static 'search/js/filter.js' %}"></script>
+<script language="javascript" type="text/javascript">
+	var table3Filters = {
+		btn_reset: true,
+		btn_reset_text: "Clear",
+
+		rows_counter: true,
+		rows_counter_text: "Displayed rows: ",
+
+		col_0: "select",
+		col_1: "select",
+		col_2: "select",
+		col_3: "select",
+
+		enter_key: true,
+		sort_select: true,
+
+		display_all_text: "- Show all -",
+	}
+	setFilterGrid("table",0,table3Filters);
+
+document.getElementById("flt4_table").setAttribute("placeholder", "Filter by word");
+</script>
+
+<script src="{% static 'search/js/sort.js' %}"></script>
+<script>
+var options = {
+  valueNames: [ 'sort-1', 'sort-2', 'sort-3', 'sort-4', 'sort-5' ]
+};
+
+var userList = new List('result', options);
+</script>
+
+</body>
+</html>

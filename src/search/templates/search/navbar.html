@@ -1,0 +1,23 @@
+<div>
+    <!--<ul>-->
+        <!--<li style="display: inline;"><a href="{% url 'agreements' %}">Search for agreements</a></li>-->
+        <!--<li style="display: inline;"><a href="{% url 'sec_filings' %}">Search for SEC filings</a></li>-->
+        <!--<li style="display: inline;"><a href="{% url 'filers' %}">Search for Filers (Companies)</a></li>-->
+
+        <!--<li style="display: inline; float:right"><a href="{% url 'test' %}">Test page</a></li>-->
+    <!--</ul>-->
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Search application</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'filers' %}">Search for Filers (Companies)</a></li>
+                <li><a href="{% url 'sec_filings' %}">Search for SEC filings</a></li>
+                <li><a href="{% url 'agreements' %}">Search for agreements</a></li>
+            </ul>
+        </div>
+    </nav>
+
+</div>

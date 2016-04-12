@@ -1,0 +1,149 @@
+<html>
+<head>
+    <title>Home page</title>
+    {% load staticfiles %}
+    <script src="{% static 'search/autocomplete.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'search/css/sort_filter.css' %}">
+    <!-- CSS for navbar-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+{% include "search/navbar.html" %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+        <h1>Hello</h1>
+
+            <p>
+                This is the home page. To search data in database you can use links above.<br>
+                You can find some description below.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p>
+                <h3><a href="{% url 'filers' %}" target="_blank">Search for Filers</a></h3> is a page that allows to search for companies.
+                It gets <strong>Company name</strong>, <strong>SIC</strong>, <strong>SEC Form</strong> and
+                <strong>Agreement type</strong>. Company name, SIC and SEC Form have autocomplete. If you type any text,
+                it searches for all matches with this text.<br> For example, if you type "lines" to Company name field, you will have
+                "AMERICAN AIRLINES INC".
+                The same with SIC and SEC Form.
+                Agreement Type doesn't have autocomplete because I didn't have data in database for this field.
+            </p>
+            <p>
+                Using this search you don't have to type exact name of company or sic or sec form.
+                You can type "Airlines" in company name field. When you click search button, you will get data of
+                all companies with name "Airlines", including "AMERICAN AIRLINES INC".
+            </p>
+            <p>
+                Also if you leave any field blank it will search for all.
+                For example, if you fill SIC and SEC Form but leave Company name without text,
+                you will see all companies that match with this SIC and SEC Form.
+            </p>
+            <p>
+                If you leave all fields blank you'll see all data about all items in the database.
+            </p>
+            <p>
+                Radiobutton specifies what type of result will you have.
+            </p>
+            <p>
+                <strong><a name="agr"></a>Create an agreement result page</strong> allows to create page that will contain table with columns:
+                <ul>
+                    <li><i>Date</i> - filing date</li>
+                    <li><i>Company</i> - company name</li>
+                    <li><i>Name of agreements</i> - no information in database</li>
+                    <li><i>Agreement type</i>- no information in database</li>
+                    <li><i>Filed with form</i>- sec form</li>
+                    <li><i>Other information</i> - no information in database</li>
+                    <li>
+                        <i>Related agreements</i> - this is a blank column because
+                        I didn't know where to store this data. Is it related to Documents or Companies?
+                        I would like to find this out and I will complete it.
+                    </li>
+                    <li>
+                        <i>Parties</i> - this is a blank column for now,
+                        because I didn't know how would you like to see "parties" in this table.
+                        One party per one row? Or all parties per one row?
+                        Depending on this I have to do different queries to DB.
+                        What has to be shown if there are no parties of document?
+                        I would like to find this out and complete it.
+                    </li>
+                </ul>
+            </p>
+            <p>
+                <strong><a name="SEC"></a>Create a SEC Filing result page</strong> creates the page with table with columns:
+            <ul>
+                <li><i>Date</i></li>
+                <li><i>Company</i></li>
+                <li><i>Sec form</i></li>
+                <li><i>Sec form additional information</i> - There are no data in database of this</li>
+                <li><i>Exhibits</i> - In this column I have outputted all documents name,
+                    description and url that have name "EX" + "something".
+                    I'm not sure This is what you asked. Please, let me know If I have to correct this.
+                    The script outputs one "Exhibit" per company. If company has a several "Exhibits" you will see
+                    a several rows with this company and with different "Exhibits" in each row.
+                    Also it shows all companies that have "Exhibits". If company doesn't have any document with "EX"
+                    in the name of it, you won't have this company in this table.<br>
+                    I'm not sure that is what you asked. Please, let me know if I have to correct this and I will change query to DB.
+                    <br>
+                    Also, here you can find filter by word. You can type any text and filter this column by this word.
+                </li>
+            </ul>
+            </p>
+            <p>
+                If <strong>Search for primary companies only</strong> is checked then you will see name of companies that
+                are primary. Otherwise you will see all companies.
+            </p>
+            <p>
+                Click on column name to sort the table.
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <h3><a href="{% url 'sec_filings' %}">Search for SEC filings</a></h3> is the page where you can find
+                <strong>Sec Form</strong> field and select input field for <strong>Date range</strong> (range of filing date).
+                Here you can find the same principle of autocomplete as in Search for Filers
+                and the same principle of search as well: if you type just a part ot text it will show you result
+                that matches with this part of text. For example, if type "-K" in Sec Form field, you will have result related to
+                8-K form, 6-K form and so on. If you leave it blank you will have result of all forms.
+            </p>
+            <p>
+                This type of search returns the same page as Search for Filers with
+                <a href="#SEC">Create a SEC Filing result page</a> radiobutton clicked.
+            </p>
+            <p>
+                Currently now database has records with filing date of March 3, 2015 only.
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <h3><a href="{% url 'agreements' %}">Search for agreements</a></h3> is the page where you can set
+                <strong>Agreement name</strong>, <strong>Agreement type</strong> and <strong>Range for agreements date</strong>.
+                It returns the same table as Search for Filers with <a href="#agr">Create an agreement result page</a> radiobutton clicked.
+            </p>
+            <p>
+                As far as I didn't have data of this I put some fake agreements dates to the database to test it.<br>
+                If you use time range as March 3, 2015 and leave all other fields blank you can see the table.
+            </p>
+            <p>
+                There is a button called "Add party". I would like to know if this idea of adding parties OK for you.
+                Otherwise let me know how would you like to see it.
+            </p>
+            <p>
+                This form gets data of parties and capacities and send it to the server but doesn't search for them in database.
+                It's because I must specify what exactly it has to do.<br>
+                If I have a several "parties" filed should I search for documents that have all these "parties" or should I
+                search for documents that have at least one of them?
+            </p>
+            <p>
+                And again, how it should be displayed? One party pre one row or all parties that related to some document should be
+                showed in one row?<br>
+                Let me know this and I will complete it.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

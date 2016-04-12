@@ -1,0 +1,172 @@
+<html>
+<head>
+    <title>{{ header }}</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!--Autocomplete data also could be loaded from search/autocomplete.js file -->
+    {% load staticfiles %}
+    <script src="{% static 'search/autocomplete.js' %}"></script>
+    <style>
+        .ui-autocomplete { height: 200px; overflow-y: scroll; width: 200px; overflow-x: hidden;}
+
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'search/css/sort_filter.css' %}">
+
+
+    <!-- CSS for navbar-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <style>
+    input[type=text], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    input[type=submit] {
+        width: 100%;
+        background-color: #325b84;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+        background-color: #003366;
+    }
+
+    .content {
+        margin: auto;
+        width: 40%;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 40px;
+    }
+
+    select {
+        width: 32%;
+        margin: 0px;
+        display: inline-block;
+    }
+
+    input[type=button] {
+        width: 100%;
+        background-color: #808080;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    input[type=button]:hover {
+        background-color: #a0a0a0;
+    }
+
+    input[type=text].party_capacity {
+        width: 49%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    </style>
+</head>
+<body>
+{% include "search/navbar.html" %}
+
+{% if show_form %}
+<div class="content">
+    <form action="/" method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+        {% ifnotequal field.label "Search for" %}
+        {% ifnotequal field.label "Pr only" %}
+        <div>
+            {% if not field in form.hidden_fields %}
+            <label for="{{ field.auto_id }}">{{ field.label }}</label>
+            {% endif %}
+        </div>
+        <div>
+            {{ field }}
+        </div>
+        {% endifnotequal %}
+        {% endifnotequal %}
+
+        {% ifequal field.label "Search for" %}
+        <div>
+            {{ field.0 }}
+        </div>
+        <div>
+            {{ field.1 }}
+        </div>
+        {% endifequal %}
+
+        {% ifequal field.label "Pr only" %}
+        <div>
+            {{ field.0 }}
+        </div>
+        {% endifequal %}
+        {% endfor %}
+
+
+        {% if show_parties %}
+        <div id="parties"></div>
+        <div>
+            <input type="button" value="Add party" onclick="new_func()">
+        </div>
+        {% endif %}
+
+        <input type="submit" value="Search"/>
+    </form>
+</div>
+{% endif %}
+
+{% if show_parties %}
+<script type="text/javascript">
+    var elementID = 1;
+
+    function new_func(){
+        var partyElement = document.getElementById("parties");
+
+        var newPartyContainer = document.createElement("div");
+        var newLine = document.createElement("br");
+
+        var newParty = document.createElement("input");
+        newParty.type = "text";
+        newParty.name = "party_" + elementID;
+        newParty.id = "p_" + elementID;
+        newParty.placeholder = "Party";
+        newParty.className = "party_capacity";
+
+        var newCapacity = document.createElement("input");
+        newCapacity.type = "text";
+        newCapacity.name = "capacity_" + elementID;
+        newCapacity.id = "c_" + elementID;
+        newCapacity.placeholder = "Capacity";
+        newCapacity.className = "party_capacity";
+
+        newPartyContainer.appendChild(newParty);
+        newPartyContainer.appendChild(newCapacity);
+
+        partyElement.appendChild(newPartyContainer);
+        elementID++;
+    };
+</script>
+{% endif %}
+
+</body>
+</html>
