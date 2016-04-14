@@ -65,5 +65,4 @@ target/
 Include/
 Lib/
 Scripts/
-__init__.py
 pip-selfcheck.json

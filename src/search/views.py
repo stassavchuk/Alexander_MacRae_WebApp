@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import *
 
-from .scripts import search_script
+from .app_scripts import search_script
 
 def index(request):
     header = "Home page"
@@ -67,6 +67,7 @@ def index(request):
             form = SecFilingsForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
+                c = data['company']
                 f = data['sec_form']
                 d0 = data['date_start']
                 d1 = data['date_end']
@@ -77,7 +78,7 @@ def index(request):
                 print 'End date:      ', str(d1)
                 print 'Only primaries:', p
 
-                result = search_script.search_2(f, d0, d1, p)
+                result = search_script.search_2(c, f, d0, d1, p)
                 return render(request, 'search/sec_filings_result_page.html', {'data': result})
             else:
                 print "BAD Request"
@@ -89,7 +90,7 @@ def index(request):
                 data = form.cleaned_data
                 search_for = data['search_for']
                 if search_for == '1':
-                    from scripts.search_script import search_by_company
+                    from app_scripts.search_script import search_by_company
                     company = data['company']
                     sec_form = data['sec_form']
                     sic = data['sic']
@@ -101,7 +102,7 @@ def index(request):
 
                 if search_for == '2':
                     # DO search
-                    from scripts.search_script import search_by_company
+                    from app_scripts.search_script import search_by_company
                     company = data['company']
                     sec_form = data['sec_form']
                     sic = data['sic']

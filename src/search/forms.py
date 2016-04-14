@@ -26,6 +26,10 @@ class AgreementsForm(forms.Form):
 
 
 class SecFilingsForm(forms.Form):
+    company = forms.CharField(label='Company',
+                              max_length=200,
+                              required=False,
+                              widget=forms.TextInput(attrs={'placeholder': 'e.g. American Airlines'}))
     sec_form = forms.CharField(label='Sec Form', max_length=200, required=False,
                                widget=forms.TextInput(attrs={'placeholder': 'e.g 6-K'}))
     date_start = forms.DateField(widget=forms.SelectDateWidget(years=YEAR_CHOICES), label='Start date')
