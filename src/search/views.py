@@ -160,4 +160,6 @@ def filers(request):
 
 
 def test_view(request):
+    from app_scripts import fill_db_script
+    fill_db_script.fill_db()
     return render(request, "search/test.html", {})
