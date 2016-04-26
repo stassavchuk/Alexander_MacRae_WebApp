@@ -7,6 +7,8 @@ from ..models import *
 
 
 def read_csv(num=None, maxlength=None):
+    if not num:
+        num = -1
     filename = r'C:\Users\Stanislav\PycharmProjects\Alex_MacRae_Web_App\documents\April4.csv'
     with open(filename) as csv_file:
         # head = [next(csv_file) for x in xrange(num)]
@@ -207,7 +209,7 @@ def _fill(data):
 
 
 def fill_db():
-    data = read_csv(num=300)
+    data = read_csv()
     for item in tqdm(data):
         cik = item[1]
         access_no = item[2]
