@@ -164,12 +164,50 @@ class Scraper(object):
         return cmp_list
 
 
-def _fill(db_data):
-    pass
+def _fill(data):
+    f = Filing(
+        access_num=data.access_no,
+        fil_date=data.fil_data,
+        fil_date_ch=data.fil_data_ch,
+        accepted=data.accepted,
+        doc_count=data.doc_count,
+        sec_form=data.documents[0].seq,
+        sec_form_det=''
+    )
+    f.save()
+
+    for idx, comp in enumerate(data.companies):
+        c = Company(
+            name=comp.name,
+            irs_no=comp.irs_no,
+            state_inc=comp.state_of_incorp,
+            f_year_end=comp.fiscal_year_end,
+            c_type=comp.type,
+            act=comp.act,
+            file_no=comp.file_no,
+            film_no=comp.film_no,
+            sic=comp.sic,
+            cik=comp.cik,
+            primary=True if idx == 0 else False,
+            filing=f
+        )
+        c.save()
+
+    for doc in data.documents:
+        d = Document(
+            seq=doc.seq,
+            description=doc.description,
+            doc_name=doc.doc_name,
+            url=doc.url,
+            doc_type=doc.type,
+            size=doc.size,
+            filing=f
+        )
+        d.save()
 
 
 def fill_db():
-    data = read_csv(num=-1)
+    data = read_csv(num=300)
     for item in tqdm(data):
         cik = item[1]
         access_no = item[2]
