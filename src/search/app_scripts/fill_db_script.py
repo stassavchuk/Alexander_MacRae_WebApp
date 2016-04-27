@@ -4,6 +4,7 @@ from collections import namedtuple
 import re
 from tqdm import tqdm
 from ..models import *
+import logging
 
 
 def read_csv(num=None, maxlength=None):
@@ -18,7 +19,7 @@ def read_csv(num=None, maxlength=None):
             if idx == num - 1:
                 break
     head = [[item.replace('"', '')[:maxlength if maxlength else None] for item in line.split('","')] for line in head]
-
+    # head = head[5830+25733:]
     return head
 
 
@@ -210,17 +211,27 @@ def _fill(data):
 
 def fill_db():
     data = read_csv()
-    for item in tqdm(data):
-        cik = item[1]
-        access_no = item[2]
-        url = r'https://www.sec.gov/Archives/edgar/data/' \
-              + cik[3:] + '/' + access_no + '-index.htm'
-        try:
-            db_data = Scraper.scrap(url)
-            _fill(db_data)
-        except:
-            pass
-
+    logging.basicConfig(
+        level=logging.DEBUG,
+        filename=r'C:\Users\Stanislav\PycharmProjects\Alex_MacRae_Web_App\a1\src\search\app_scripts\err.log'
+    )
+    acc_numbers = Filing.objects.values('access_num')
+    acc_numbers = [n['access_num'] for n in acc_numbers]
+    data = set([(d[1], d[2]) for d in data])
+    with open(r'C:\Users\Stanislav\PycharmProjects\Alex_MacRae_Web_App\a1\src\search\app_scripts\ok.log', 'w') as f:
+        for item in tqdm(data):
+            cik = item[0]
+            access_no = item[1]
+            url = r'https://www.sec.gov/Archives/edgar/data/' \
+                  + cik[3:] + '/' + access_no + '-index.htm'
+            try:
+                if access_no not in acc_numbers:
+                    db_data = Scraper.scrap(url)
+                    _fill(db_data)
+                    f.write(url + '\n')
+            except:
+                logging.exception(item[0] + ' ' + item[1] + url)
+                print access_no, access_no in acc_numbers
 
 if __name__ == '__main__':
     pass
