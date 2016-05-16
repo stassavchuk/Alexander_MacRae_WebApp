@@ -9,4 +9,4 @@ Using links above you can do three types of search:
 2.  /sec_filings/
 3.  /agreements/
 ```
-
+Each of them reply by useful sortable table that is easy to filter.
